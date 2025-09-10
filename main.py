@@ -4,7 +4,7 @@ from store import Store
 
 
 def start(store: Store):
-    """Run a simple CLI for the store."""
+    """Run a robust CLI for the store with full input validation."""
     while True:
         print("\n===== Welcome to Best Buy =====")
         print("1. List all products in store")
@@ -39,27 +39,38 @@ def start(store: Store):
                       f"Quantity: {product.get_quantity()}")
 
             shopping_list = []
+
             while True:
                 prod_choice = input(
                     "Enter product number to buy (or 'done' to finish): "
                 ).strip()
+
                 if prod_choice.lower() == "done":
                     break
 
-                if not prod_choice.isdigit() or not (1 <= int(prod_choice) <= len(products_list)):
-                    print("Invalid choice. Try again.")
+                try:
+                    product_idx = int(prod_choice) - 1
+                    if not (0 <= product_idx < len(products_list)):
+                        print("Invalid product number. Try again.")
+                        continue
+                except ValueError:
+                    print("Please enter a valid number.")
                     continue
 
-                product_idx = int(prod_choice) - 1
                 product = products_list[product_idx]
 
                 qty_input = input(f"Enter quantity for {product.name}: ").strip()
-                if not qty_input.isdigit() or int(qty_input) <= 0:
-                    print("Invalid quantity. Try again.")
+                try:
+                    quantity = int(qty_input)
+                    if quantity <= 0:
+                        print("Quantity must be greater than zero.")
+                        continue
+                except ValueError:
+                    print("Please enter a valid integer quantity.")
                     continue
 
-                quantity = int(qty_input)
                 shopping_list.append((product, quantity))
+                print(f"Added {quantity} x {product.name} to your order.")
 
             if shopping_list:
                 try:
@@ -79,7 +90,7 @@ def start(store: Store):
 
 
 if __name__ == "__main__":
-    # setup initial stock of inventory
+    # Setup initial stock of inventory
     product_list = [
         Product("MacBook Air M2", price=1450, quantity=100),
         Product("Bose QuietComfort Earbuds", price=250, quantity=500),
