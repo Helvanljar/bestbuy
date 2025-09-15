@@ -19,8 +19,8 @@ def start(store: Store):
                 print("No active products available in the store.")
             else:
                 print("\nProducts in store:")
-                for product in products_list:
-                    product.show()
+                for idx, product in enumerate(products_list, start=1):
+                    print(f"{idx}. {product.show()}")
 
         elif choice == "2":
             total_quantity = store.get_total_quantity()

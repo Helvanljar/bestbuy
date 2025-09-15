@@ -15,9 +15,11 @@ class Product:
         self.active = True
 
     def get_quantity(self) -> int:
+        """Return the current quantity of the product."""
         return self.quantity
 
     def set_quantity(self, quantity: int):
+        """Update quantity and deactivate product if it reaches zero."""
         if quantity < 0:
             raise ValueError("Quantity cannot be negative.")
         self.quantity = quantity
@@ -27,22 +29,27 @@ class Product:
             self.activate()
 
     def is_active(self) -> bool:
+        """Return True if the product is active, False otherwise."""
         return self.active
 
     def activate(self):
+        """Activate the product."""
         self.active = True
 
     def deactivate(self):
+        """Deactivate the product."""
         self.active = False
 
-    def show(self):
-        status = "Active" if self.active else "Inactive"
-        print(
-            f"{self.name}, Price: {self.price}, "
-            f"Quantity: {self.quantity}, Status: {status}"
-        )
+    def show(self) -> str:
+        """Return a string representation of the product."""
+        return f"{self.name}, Price: {self.price}, Quantity: {self.quantity}"
 
     def buy(self, quantity: int) -> float:
+        """
+        Buy a given quantity of the product.
+        Returns the total price of the purchase.
+        Raises ValueError if quantity is invalid.
+        """
         if quantity <= 0:
             raise ValueError("Purchase quantity must be greater than zero.")
         if quantity > self.quantity:
